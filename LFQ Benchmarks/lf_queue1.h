@@ -9,10 +9,10 @@
 
 namespace Common {
   template<typename T>
-  class LFQueue1 final { // <--- RENAMED
+  class LFQueue1 final { 
   public:
     explicit LFQueue1(std::size_t num_elems) :
-        store_(num_elems) { // Initialize with size only
+        store_(num_elems) {
     }
 
     auto getNextToWriteTo() noexcept {
@@ -24,7 +24,7 @@ namespace Common {
       num_elements_++;
     }
 
-    auto getNextToRead() noexcept -> T * { // Made non-const to allow move
+    auto getNextToRead() noexcept -> T * { 
       return (size() ? &store_[next_read_index_] : nullptr);
     }
 

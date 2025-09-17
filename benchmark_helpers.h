@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <chrono>
 
-// Helper to generate a random string of a given length.
 inline std::string random_string(size_t length) {
     static const char charset[] =
         "0123456789"
@@ -19,7 +18,6 @@ inline std::string random_string(size_t length) {
     return str;
 }
 
-// A simple timer class to measure elapsed time.
 class Timer {
 public:
     void start() {

@@ -19,7 +19,6 @@ inline std::string random_string(size_t length) {
     return str;
 }
 
-// A simple timer class to measure elapsed time.
 class Timer {
 public:
     void start() {

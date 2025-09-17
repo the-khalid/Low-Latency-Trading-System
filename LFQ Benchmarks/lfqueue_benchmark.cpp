@@ -3,14 +3,13 @@
 #include <vector>
 #include <string>
 
-#include "lf_queue1.h" // Renamed class
-#include "lf_queue2.h" // Renamed class
+#include "lf_queue1.h"
+#include "lf_queue2.h"
 #include "benchmark_helpers.h"
 
 constexpr size_t NUM_OPERATIONS = 5'000'000;
 constexpr size_t QUEUE_CAPACITY = 1024;
 
-// --- Benchmark for the first LFQueue implementation ---
 void benchmark_queue1() {
     Common::LFQueue1<std::string> queue(QUEUE_CAPACITY);
     Timer timer;
@@ -44,7 +43,6 @@ void benchmark_queue1() {
     std::cout << "Operations per second: " << (double)NUM_OPERATIONS / elapsed << std::endl;
 }
 
-// --- Benchmark for the second LFQueue implementation ---
 void benchmark_queue2() {
     Common::LFQueue2<std::string> queue(QUEUE_CAPACITY);
     Timer timer;

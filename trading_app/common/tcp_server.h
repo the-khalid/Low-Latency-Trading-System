@@ -28,12 +28,10 @@ namespace Common {
 
     epoll_event events_[1024];
 
-    /// Collection of all sockets, sockets for incoming data, sockets for outgoing data and dead connections.
     std::vector<TCPSocket *> receive_sockets_, send_sockets_;
 
-    /// Function wrapper to call back when data is available.
     std::function<void(TCPSocket *s, Nanos rx_time)> recv_callback_ = nullptr;
-    /// Function wrapper to call back when all data across all TCPSockets has been read and dispatched this round.
+    
     std::function<void()> recv_finished_callback_ = nullptr;
 
     std::string time_str_;

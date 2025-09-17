@@ -22,7 +22,6 @@ namespace Common {
 
   /// Publish outgoing data and read incoming data.
   auto McastSocket::sendAndRecv() noexcept -> bool {
-    // Read data and dispatch callbacks if data is available - non blocking.
     const ssize_t n_rcv = recv(socket_fd_, inbound_data_.data() + next_rcv_valid_index_, McastBufferSize - next_rcv_valid_index_, MSG_DONTWAIT);
     if (n_rcv > 0) {
       next_rcv_valid_index_ += n_rcv;
@@ -31,7 +30,6 @@ namespace Common {
       recv_callback_(this);
     }
 
-    // Publish market data in the send buffer to the multicast stream.
     if (next_send_valid_index_ > 0) {
       ssize_t n = ::send(socket_fd_, outbound_data_.data(), next_send_valid_index_, MSG_DONTWAIT | MSG_NOSIGNAL);
 

@@ -80,7 +80,6 @@ namespace Common {
     return std::to_string(qty);
   }
 
-  /// Priority represents position in the FIFO queue for all orders with the same side and price attributes.
   typedef uint64_t Priority;
   constexpr auto Priority_INVALID = std::numeric_limits<Priority>::max();
 

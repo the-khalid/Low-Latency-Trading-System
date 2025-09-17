@@ -18,8 +18,6 @@ namespace Common {
     return (pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpuset) == 0);
   }
 
-  /// Creates a thread instance, sets affinity on it, assigns it a name and
-  /// passes the function to be run on that thread as well as the arguments to the function.
   template<typename T, typename... A>
   inline auto createAndStartThread(int core_id, const std::string &name, T &&func, A &&... args) noexcept {
     auto t = new std::thread([&]() {

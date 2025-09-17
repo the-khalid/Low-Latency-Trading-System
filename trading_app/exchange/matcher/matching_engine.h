@@ -46,7 +46,6 @@ namespace Exchange {
       }
     }
 
-    /// Write client responses to the lock free queue for the order server to consume.
     auto sendClientResponse(const MEClientResponse *client_response) noexcept {
       logger_.log("%:% %() % Sending %\n", __FILE__, __LINE__, __FUNCTION__, Common::getCurrentTimeStr(&time_str_), client_response->toString());
       auto next_write = outgoing_ogw_responses_->getNextToWriteTo();
@@ -54,7 +53,6 @@ namespace Exchange {
       outgoing_ogw_responses_->updateWriteIndex();
     }
 
-    /// Write market data update to the lock free queue for the market data publisher to consume.
     auto sendMarketUpdate(const MEMarketUpdate *market_update) noexcept {
       logger_.log("%:% %() % Sending %\n", __FILE__, __LINE__, __FUNCTION__, Common::getCurrentTimeStr(&time_str_), market_update->toString());
       auto next_write = outgoing_md_updates_->getNextToWriteTo();
@@ -62,7 +60,6 @@ namespace Exchange {
       outgoing_md_updates_->updateWriteIndex();
     }
 
-    /// Main loop for this thread - processes incoming client requests which in turn generates client responses and market updates.
     auto run() noexcept {
       logger_.log("%:% %() %\n", __FILE__, __LINE__, __FUNCTION__, Common::getCurrentTimeStr(&time_str_));
       while (run_) {
@@ -76,7 +73,6 @@ namespace Exchange {
       }
     }
 
-    /// Deleted default, copy & move constructors and assignment-operators.
     MatchingEngine() = delete;
 
     MatchingEngine(const MatchingEngine &) = delete;
@@ -88,7 +84,6 @@ namespace Exchange {
     MatchingEngine &operator=(const MatchingEngine &&) = delete;
 
   private:
-    /// Hash map container from TickerId -> MEOrderBook.
     OrderBookHashMap ticker_order_book_;
 
     /// Lock free queues.

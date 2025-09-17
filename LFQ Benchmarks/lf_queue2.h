@@ -10,7 +10,7 @@
 
 namespace Common {
     template<typename T, typename Alloc = std::allocator<T>>
-    class LFQueue2 final : private Alloc { // <--- RENAMED
+    class LFQueue2 final : private Alloc { 
         std::size_t capacity_;
         T* ring_;
         alignas(64) std::atomic<std::size_t> pushCursor_ {0};
@@ -53,17 +53,16 @@ namespace Common {
             return true;
         }
         
-        // Corrected pop method
         auto pop(T& value) -> bool {
-            auto push = pushCursor_.load(std::memory_order_acquire); // CORRECTED: Must be acquire
+            auto push = pushCursor_.load(std::memory_order_acquire);
             auto pop = popCursor_.load(std::memory_order_relaxed);
 
             if(push == pop) {
                 return false;
             }
 
-            value = std::move(ring_[pop % capacity_]); // CORRECTED: Use std::move
-            ring_[pop % capacity_].~T(); // CORRECTED: Call destructor on the correct type T
+            value = std::move(ring_[pop % capacity_]); 
+            ring_[pop % capacity_].~T();
             popCursor_.store(pop + 1, std::memory_order_release);
             return true;
         }

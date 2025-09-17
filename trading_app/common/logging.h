@@ -10,10 +10,9 @@
 #include "time_utils.h"
 
 namespace Common {
-  /// Maximum size of the lock free queue of data to be logged.
+  
   constexpr size_t LOG_QUEUE_SIZE = 8 * 1024 * 1024;
 
-  /// Type of LogElement message.
   enum class LogType : int8_t {
     CHAR = 0,
     INTEGER = 1,
@@ -26,7 +25,6 @@ namespace Common {
     DOUBLE = 8
   };
 
-  /// Represents a single and primitive log entry.
   struct LogElement {
     LogType type_ = LogType::CHAR;
     union {
@@ -44,7 +42,6 @@ namespace Common {
 
   class Logger final {
   public:
-    /// Consumes from the lock free queue of log entries and writes to the output log file.
     auto flushQueue() noexcept {
       while (running_) {
 
@@ -164,16 +161,15 @@ namespace Common {
       pushValue(value.c_str());
     }
 
-    /// Parse the format string, substitute % with the variable number of arguments passed and write the string to the lock free queue.
     template<typename T, typename... A>
     auto log(const char *s, const T &value, A... args) noexcept {
       while (*s) {
         if (*s == '%') {
-          if (UNLIKELY(*(s + 1) == '%')) { // to allow %% -> % escape character.
+          if (UNLIKELY(*(s + 1) == '%')) { 
             ++s;
           } else {
-            pushValue(value); // substitute % with the value specified in the arguments.
-            log(s + 1, args...); // pop an argument and call self recursively.
+            pushValue(value); 
+            log(s + 1, args...);
             return;
           }
         }
@@ -187,7 +183,7 @@ namespace Common {
     auto log(const char *s) noexcept {
       while (*s) {
         if (*s == '%') {
-          if (UNLIKELY(*(s + 1) == '%')) { // to allow %% -> % escape character.
+          if (UNLIKELY(*(s + 1) == '%')) { 
             ++s;
           } else {
             FATAL("missing arguments to log()");
@@ -197,7 +193,6 @@ namespace Common {
       }
     }
 
-    /// Deleted default, copy & move constructors and assignment-operators.
     Logger() = delete;
 
     Logger(const Logger &) = delete;
@@ -209,11 +204,9 @@ namespace Common {
     Logger &operator=(const Logger &&) = delete;
 
   private:
-    /// File to which the log entries will be written.
     const std::string file_name_;
     std::ofstream file_;
 
-    /// Lock free queue of log elements from main logging thread to background formatting and disk writer thread.
     LFQueue<LogElement> queue_;
     std::atomic<bool> running_ = {true};
 

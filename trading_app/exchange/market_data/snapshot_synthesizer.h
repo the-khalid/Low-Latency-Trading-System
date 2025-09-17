@@ -21,21 +21,16 @@ namespace Exchange {
 
     ~SnapshotSynthesizer();
 
-    /// Start and stop the snapshot synthesizer thread.
     auto start() -> void;
 
     auto stop() -> void;
 
-    /// Process an incremental market update and update the limit order book snapshot.
     auto addToSnapshot(const MDPMarketUpdate *market_update);
 
-    /// Publish a full snapshot cycle on the snapshot multicast stream.
     auto publishSnapshot();
 
-    /// Main method for this thread - processes incremental updates from the market data publisher, updates the snapshot and publishes the snapshot periodically.
     auto run() -> void;
 
-    /// Deleted default, copy & move constructors and assignment-operators.
     SnapshotSynthesizer() = delete;
 
     SnapshotSynthesizer(const SnapshotSynthesizer &) = delete;
